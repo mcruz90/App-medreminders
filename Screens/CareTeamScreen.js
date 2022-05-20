@@ -1,19 +1,9 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 import React from 'react';
-import AppLoading from 'expo-app-loading';
 import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking } from 'react-native';
 
 const CareTeamScreen = ({ navigation, route }) => {
 
-    let [fontsLoaded] = useFonts({
-      Quicksand_400Regular,
-      Quicksand_600SemiBold,
-    });
-  
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    }
-  
     
     let handleOnPress = () => {
       Linking.openURL('tel:1234567890')

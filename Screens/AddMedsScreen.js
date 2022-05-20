@@ -4,20 +4,10 @@ import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, Scr
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import callGoogleVisionAsync from "../components/helperFunctions.js"
 
-
 const AddMedsScreen = ({ navigation, route }) => {
 
   const [childToParent, setChildToParent] = useState(false)
 
-    let [fontsLoaded] = useFonts({
-      Quicksand_400Regular,
-      Quicksand_600SemiBold,
-    });
-  
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    }
-  
     return (
       <ScrollView>
       <View style={styles.container}>

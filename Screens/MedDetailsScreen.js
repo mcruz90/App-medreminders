@@ -1,6 +1,5 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 import React, {useState, useEffect, useMemo} from 'react'
-import AppLoading from 'expo-app-loading';
 import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking, Touchable } from 'react-native';
 import {db} from "../db/firebase"
 import {collection, doc, getDocs} from 'firebase/firestore'
@@ -66,31 +65,9 @@ const MedDetailsScreen = ({ navigation, route }) => {
 
 
     const [modalVisible, setModalVisible] = useState(false);
-    
-    const userDate = '01/23/2022';
-    const userDate2 = '02/13/2022';
-  
-    const dateFilled = new Date(userDate);
-    const dateToday = new Date();
-  
-    const difference = (dateToday.getTime() - dateFilled.getTime());
-  
-    const daysDateFilled = Math.ceil(dateFilled.getTime() / (1000 * 3600 * 24))
-  
-    const days = Math.ceil(difference / (1000 * 3600 * 24)); 
-  
-    
-    let [fontsLoaded] = useFonts({
-      Quicksand_400Regular,
-      Quicksand_600SemiBold,
-    });
-  
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    }
 
     return (
-  <ScrollView>
+      <ScrollView>
       <View style={{ margin: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly'}}>
           
       {medNames}

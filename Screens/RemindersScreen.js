@@ -1,6 +1,5 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 import React, {useState, useEffect} from 'react';
-import AppLoading from 'expo-app-loading';
 import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking } from 'react-native';
 import {db} from "../db/firebase"
 import {collection, doc, getDocs} from 'firebase/firestore'
@@ -13,15 +12,6 @@ const RemindersScreen = ({ navigation, RemindersScreen }) => {
     await navigation.navigate('MedDetails', { name: 'Med Deets' })  
     setTimeout(() => {setDelayData(true)},2000);
   }
-
-    let [fontsLoaded] = useFonts({
-      Quicksand_400Regular,
-      Quicksand_600SemiBold,
-    });
-  
-    if (!fontsLoaded) { 
-      return <AppLoading />;
-    }
   
     return (
   

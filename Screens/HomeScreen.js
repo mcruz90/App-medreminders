@@ -1,19 +1,10 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 import React from 'react';
-import AppLoading from 'expo-app-loading';
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   
-    let [fontsLoaded] = useFonts({
-      Quicksand_400Regular,
-      Quicksand_600SemiBold,
-    });
-  
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    }
-  
+
     return (
 
   
