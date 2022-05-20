@@ -1,16 +1,25 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import AppLoading from 'expo-app-loading';
 import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking } from 'react-native';
+import {db} from "../db/firebase"
+import {collection, doc, getDocs} from 'firebase/firestore'
 
 const RemindersScreen = ({ navigation, RemindersScreen }) => {
+
+  const [delayData, setDelayData] = useState(false)
+
+  const delayThing = async () => {
+    await navigation.navigate('MedDetails', { name: 'Med Deets' })  
+    setTimeout(() => {setDelayData(true)},2000);
+  }
 
     let [fontsLoaded] = useFonts({
       Quicksand_400Regular,
       Quicksand_600SemiBold,
     });
   
-    if (!fontsLoaded) {
+    if (!fontsLoaded) { 
       return <AppLoading />;
     }
   
@@ -18,56 +27,58 @@ const RemindersScreen = ({ navigation, RemindersScreen }) => {
   
       <View style={styles.container}>
   
-        <View style={{ margin: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly'}}>
+        <View style={{ margin: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly'}}>          
                 
           <Text style={{fontFamily: 'Quicksand_600SemiBold', paddingBottom: 10, fontSize: 24}}>Medication renewals</Text>
-  
-                <View style={{ margin: 5, paddingLeft: 10, width: 300, borderRadius: 20, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
+          {delayData && 
+            <View>
+                <View style={{ margin: 5, paddingLeft: 10, width: 300, borderRadius: 20, backgroundColor: 'pink', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
                         navigation.navigate('Reminders', { name: 'Jane' })}>
                   
                   <View style={{flex: 1}}>
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' , paddingRight: 15}}>
                 
-                            <Text style={styles.contentLeft}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>Metformin 500mg</Text></Text>
-                            <Text style={styles.contentRight}><Text style={{fontFamily: 'Quicksand_400Regular'}}>36 days left</Text></Text>
-          
-                    </View>
-                  </View>
-                </View>
-  
-                <View style={{ margin: 5, paddingLeft: 10, width: 300, borderRadius: 20, backgroundColor: 'pink', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                  
-                  <View style={{flex: 1}}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' , paddingRight: 15}}>
-                
-                            <Text style={styles.contentLeft}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>Amlodipine 10mg</Text></Text>
+                            <Text style={styles.contentLeft}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>Crestor 5mg</Text></Text>
                             <Text style={styles.contentRight}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>6 days left</Text></Text>
           
                     </View>
                   </View>
                 </View>
   
+                <View style={{ margin: 5, paddingLeft: 10, width: 300, borderRadius: 20, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                  
+                  <View style={{flex: 1}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' , paddingRight: 15}}>
+                
+                            <Text style={styles.contentLeft}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>Amlodipine 10mg</Text></Text>
+                            <Text style={styles.contentRight}><Text style={{fontFamily: 'Quicksand_400Regular'}}>7 days left</Text></Text>
+          
+                    </View>
+                  </View>
+                </View>
+  
                 <View style={{ margin: 5, paddingLeft: 10, width: 300, borderRadius: 20, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
                         navigation.navigate('Reminders', { name: 'Jane' })}>
                   
                   <View style={{flex: 1}}>
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' , paddingRight: 15}}>
                 
-                            <Text style={styles.contentLeft}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>Ramipril 5mg</Text></Text>
-                            <Text style={styles.contentRight}><Text style={{fontFamily: 'Quicksand_400Regular'}}>36 days left</Text></Text>
+                            <Text style={styles.contentLeft}><Text style={{fontFamily: 'Quicksand_600SemiBold'}}>Montelukast 10mg</Text></Text>
+                            <Text style={styles.contentRight}><Text style={{fontFamily: 'Quicksand_400Regular'}}>39 days left</Text></Text>
           
                     </View>
                   </View>
                 </View>
   
-                
+              </View>
+              }
   
-                <View style={{ margin: 15, height: 40, width: 300, borderRadius: 20, backgroundColor: '#006CDC', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
+                <View style={{ margin: 15, height: 40, width: 300, borderRadius: 20, backgroundColor: 'skyblue', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
                         navigation.navigate('Reminders', { name: 'Jane' })}>
                   <View>
-                  <TouchableOpacity style={{ height: 40, width: 300, borderRadius: 20, backgroundColor: '#006CDC', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
-                  navigation.navigate('MedDetails', { name: 'Jane' })}>
+                  <TouchableOpacity style={{ height: 40, width: 300, borderRadius: 20, backgroundColor: 'skyblue', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onPress={delayThing}>
                    <Text style={{padding: 3, color: 'white', fontFamily: 'Quicksand_600SemiBold'}} >VIEW ALL</Text>
+
             
                   </TouchableOpacity>
                     

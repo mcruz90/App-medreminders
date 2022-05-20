@@ -1,37 +1,23 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 import React, {useState, useEffect, useMemo} from 'react'
 import AppLoading from 'expo-app-loading';
-import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking, Touchable } from 'react-native';
+import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking } from 'react-native';
 import {db} from "../db/firebase"
 import {collection, doc, getDocs} from 'firebase/firestore'
-import { LogBox } from 'react-native';
 
+const PrescriptionScreen = ({ navigation }) => {
 
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-
-
-const MedDetailsScreen = ({ navigation, route }) => {
-
-  
   const [meds, setMeds] = useState([])
   const [medList, setMedList] = useState([])
 
-      useEffect(() => {
-        const unsubscribe = navigation.addListener("focus", async () => {
-        await fetchMeds();
-      });
-
-        return unsubscribe;
-      }, []);
+  useEffect(() => {
+    fetchMeds();
+      }, [])
 
   const fetchMeds=async()=>{
         const response= await getDocs(collection(db, "meds"));
         response.forEach(item=>{
-          console.log(typeof(meds))
-          if (!meds.includes(item)) (
-            setMeds(prevFiles => ([...prevFiles, {id: item.id, data: item.data()}])
-          )
-        )
+        setMeds(prevFiles => ([...prevFiles, {id: item.id, data: item.data()}]))
       })
     }
   
@@ -39,18 +25,14 @@ const MedDetailsScreen = ({ navigation, route }) => {
   const medNames = meds.map((med)=> {
     
     return (<View key={med.data.name} style={{ margin: 15, paddingLeft: 10, height: 120, width: 300, borderRadius: 20, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-      <TouchableOpacity style={{paddingTop: 10}} onPress={() =>
-      navigation.navigate('Prescription')}>
       <View style={{flex: 2.5, paddingLeft: 10}}>
               
         <Text style={{color: 'black', fontFamily: 'Quicksand_600SemiBold', fontSize: 18}} >{med.data.name}</Text>
-        <Text style={{paddingTop: 4, paddingBottom: 4, color: 'darkgrey', fontSize: 12, fontFamily: 'Quicksand_400Regular'}} >{(med.data.directions).toLowerCase()}</Text>
+        <Text style={{paddingTop: 4, paddingBottom: 4, color: 'darkgrey', fontFamily: 'Quicksand_400Regular'}} >{(med.data.directions).toLowerCase()}</Text>
         <Text style={{color: 'darkgrey', fontFamily: 'Quicksand_400Regular', fontSize: 12}} >Prescribed by: {med.data.prescriber}</Text>
         <Text style={{color: 'darkgrey', fontFamily: 'Quicksand_400Regular', fontSize: 12}} >Filled on {med.data.DateFilled}</Text>
-        <Text style={{color: 'darkgrey', fontFamily: 'Quicksand_400Regular', fontSize: 11}} >Reminder set for <Text style={{fontFamily:'Quicksand_600SemiBold'}}>{med.data.Reminder}</Text> days left</Text>
+        
       </View>
-      </TouchableOpacity>
-
       <View style={{flex: 1.1}}>
               <View style={{flexDirectin:'column', alignItems: 'center'}}>
                       <Text style={{fontFamily: 'Quicksand_600SemiBold', paddingRight: 20, paddingLeft: 10, paddingTop: 10, fontSize: 22}}>{(Number((med.data.quantity).slice(5,7))) - (Math.round(Math.abs((Date.now()) - (Date.parse(med.data.DateFilled))) / 86400000 ))}</Text>
@@ -135,11 +117,12 @@ const MedDetailsScreen = ({ navigation, route }) => {
          
          
   
-         <View style={{ margin: 15, paddingLeft: 10, height: 50, width: 300, borderRadius: 20, backgroundColor: 'skyblue', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+         <View style={{ margin: 15, paddingLeft: 10, height: 50, width: 300, borderRadius: 20, backgroundColor: 'skyblue', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
+                        navigation.navigate('Reminders', { name: 'Jane' })}>
                   <View>
                   <TouchableOpacity style={{ height: 50, borderRadius: 20, backgroundColor: 'skyblue', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
                   navigation.navigate('AddMeds', { name: 'Jane' })}>
-                   <Text style={{padding: 3, color: 'white', fontFamily: 'Quicksand_600SemiBold', fontSize: 18}} >ADD NEW PRESCRIPTION</Text>
+                   <Text style={{padding: 3, color: 'white', fontFamily: 'Quicksand_600SemiBold', fontSize: 18}} >DELETE</Text>
             
                   </TouchableOpacity>
                     
@@ -280,4 +263,4 @@ const MedDetailsScreen = ({ navigation, route }) => {
   });
   
 
-  export default MedDetailsScreen;  
+  export default PrescriptionScreen;  

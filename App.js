@@ -1,22 +1,60 @@
 
-import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking } from 'react-native';
-import React, {useState} from 'react'
-import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Platform } from 'react-native';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import React, {useState, useEffect, useRef} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { backgroundColor, borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-import MapView from 'react-native-maps';
-import AppLoading from 'expo-app-loading';
 import HomeScreen from "./Screens/HomeScreen";
 import RemindersScreen from "./Screens/RemindersScreen";
 import CareTeamScreen from "./Screens/CareTeamScreen";
 import MedDetailsScreen from './Screens/MedDetailsScreen';
+import PrescriptionScreen from './Screens/PrescriptionScreen';
 import AddMedsScreen from './Screens/AddMedsScreen';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Remote debugger']);
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    schedulePushNotification();
+  }, [])
+
   return (
+            
     <NavigationContainer>
 
       <Stack.Navigator initialRouteName="Home">
@@ -31,6 +69,7 @@ export default function App() {
         <Stack.Screen name="MedDetails" options={{ title: 'View All Medications'}} component={MedDetailsScreen} />
         <Stack.Screen name="AddMeds" 
           options={{ title: 'Add Medications'}} component={AddMedsScreen} />
+          <Stack.Screen name="Prescription" component={PrescriptionScreen} />
         {/* 
           <Stack.Screen name="AddProviders" options={{ title: 'Add New Contact'}} component={AddProvidersScreen} />
           
@@ -40,11 +79,55 @@ export default function App() {
         
         */}
         
+        
+
       </Stack.Navigator>
     </NavigationContainer>
 
-  
   );
+}
+
+
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Due in 7 days 🔔 ",
+      body: "You have prescriptions due for renewals",
+      data: { data: 'goes here' }
+    },
+    trigger: { seconds: 60 },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
 }
 
 const styles = StyleSheet.create({

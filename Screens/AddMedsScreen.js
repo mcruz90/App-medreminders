@@ -1,12 +1,14 @@
 import { useFonts, Quicksand_400Regular, Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 import React, {useState} from 'react'
-import AppLoading from 'expo-app-loading';
 import { Alert, Pressable, Modal, Dimensions, StyleSheet, Text, View, Image, ScrollView, TextInput, TouchableOpacity, Linking } from 'react-native';
 import ImagePickerComponent from "../components/ImagePickerComponent";
 import callGoogleVisionAsync from "../components/helperFunctions.js"
 
+
 const AddMedsScreen = ({ navigation, route }) => {
-                  
+
+  const [childToParent, setChildToParent] = useState(false)
+
     let [fontsLoaded] = useFonts({
       Quicksand_400Regular,
       Quicksand_600SemiBold,
@@ -23,41 +25,10 @@ const AddMedsScreen = ({ navigation, route }) => {
         <View style={{ margin: 10, flexDirection: 'column'}}>
   
         <View>
-          <ImagePickerComponent onSubmit={callGoogleVisionAsync} />
+          <ImagePickerComponent setChildToParent={setChildToParent} onSubmit={callGoogleVisionAsync} />
+          {childToParent && navigation.goBack() }
         </View>
 
-  
-          <Text style={{fontFamily: 'Quicksand_600SemiBold', fontSize: 16}}>Set refill reminder when down to</Text>
-  
-          <View style={{ marginTop: 10, marginBottom: 10, width: 300, borderRadius: 20, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
-                    navigation.navigate('Reminders', { name: 'Jane' })}>
-              <View style={{flex: 2.5, paddingLeft: 10}}>
-              <TextInput placeholder='e.g. 7 days remaining' placeholderTextColor={'lightgrey'} keyboardType='numeric' style={{borderColor:'#c0c0c0'}}></TextInput>
-              </View>
-          </View>
-  
-          <View style={{ margin: 15, height: 60, borderRadius: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
-                          navigation.navigate('Reminders', { name: 'Jane' })}>
-                    
-                    
-                    <TouchableOpacity style={{ marginRight: 5, height: 60, width: 120, borderRadius: 20, backgroundColor: '#0118B5', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
-                    navigation.navigate('ApptDetails', { name: 'Jane' })}>
-                    <Text style={{padding: 3, color: 'white', fontFamily: 'Quicksand_600SemiBold'}} >ADD</Text>
-          
-                    </TouchableOpacity>
-  
-                    
-                    <TouchableOpacity style={{ marginLeft: 5, height: 60, width: 120, borderRadius: 20, backgroundColor: 'pink', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}} onPress={() =>
-                    navigation.navigate('ApptDetails', { name: 'Jane' })}>
-                    <Text style={{padding: 3, color: 'white', fontFamily: 'Quicksand_600SemiBold'}} >RESET</Text>
-              
-                    </TouchableOpacity>
-                      
-                    
-  
-          </View>
-          
-  
         </View>
       </View>
       </ScrollView>
