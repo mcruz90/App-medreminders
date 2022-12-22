@@ -1,15 +1,5 @@
-> Why do I have a folder named ".expo" in my project?
+## Prescription Reminders App
 
-The ".expo" folder is created when an Expo project is started using "expo start" command.
+This was a final project for a university course on Human-Computer Interactions in Healthcare. The goals of the project were to design/improve a healthcare-related human-computer interfact based on the results of a usability study that we were to conduct with participants in our personal lives. An initial demo of the project was presented to the class, and modifications were to be implemented based on feedback from classmates and the course instructor, that were then to be presented in a final demo of the project.
 
-> What do the files contain?
-
-- "devices.json": contains information about devices that have recently opened this project. This is used to populate the "Development sessions" list in your development builds.
-- "packager-info.json": contains port numbers and process PIDs that are used to serve the application to the mobile device/simulator.
-- "settings.json": contains the server configuration that is used to serve the application manifest.
-
-> Should I commit the ".expo" folder?
-
-No, you should not share the ".expo" folder. It does not contain any information that is relevant for other developers working on the project, it is specific to your machine.
-
-Upon project creation, the ".expo" folder is already added to your ".gitignore" file.
+This mobile app was designed using React Native and Firebase as the database. The app also employs OCR technology by consuming Google Vision API to obtain information about prescription bottle images provided by the user.
