@@ -5,3 +5,4 @@ This was a final project for a university course on Human-Computer Interactions 
 This mobile app was designed using React Native and Firebase as the database. The app also employs OCR technology by consuming Google Vision API to obtain information about prescription bottle images provided by the user.
 
 <img src="https://raw.githubusercontent.com/mcruz90/App-medreminders/julybranch/Screenshot_20221222-214702_OneDrive.jpg" width=200>
+<img src="https://raw.githubusercontent.com/mcruz90/App-medreminders/julybranch/Screenshot_20221221-232605_Video%20Player.jpg" width=200>
