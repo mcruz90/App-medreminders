@@ -6,3 +6,4 @@ This mobile app was designed using React Native and Firebase as the database. Th
 
 <img src="https://raw.githubusercontent.com/mcruz90/App-medreminders/julybranch/Screenshot_20221222-214702_OneDrive.jpg" width=200>
 <img src="https://raw.githubusercontent.com/mcruz90/App-medreminders/julybranch/Screenshot_20221221-232605_Video%20Player.jpg" width=200>
+<img src="https://raw.githubusercontent.com/mcruz90/App-medreminders/julybranch/Screenshot_20221221-232504_Video%20Player.jpg" width=200>
